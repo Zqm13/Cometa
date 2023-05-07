@@ -1,23 +1,33 @@
-from flask import Flask, request, render_template
+from flask import Flask, render_template, request, send_file
+import pandas as pd
 from Cometa import cometa_process
 
 app = Flask(__name__)
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/')
 def index():
-    if request.method == 'POST':
-        file1 = request.files['stock.csv']
-        file2 = request.files['VANZARI.csv']
-        # run the processing script in the background
-        cometa_process(file1, file2)
-        return "Processing the files in the background..."
     return render_template('index.html')
 
-@app.route('/download')
+@app.route('/process_files', methods=['POST'])
+def process_files():
+    stock_file = request.files['stock']
+    VANZARI_file = request.files['VANZARI']
+    
+    # Read CSV files
+    stock = pd.read_csv(stock_file)
+    vanzari = pd.read_csv(VANZARI_file)
+    
+    # Process CSV files
+    result_df = cometa_process(stock, vanzari)
+    
+    # Save processed CSV file to disk
+    result_df.to_csv('result.csv', index=False)
+    
+    return send_file('result.csv', as_attachment=True)
+
+@app.route('/download_file')
 def download_file():
-    # get the path to the processed CSV file
-    output_file = "output.csv"
-    # send the file to the user as a downloadable attachment
-    return send_file(output_file, as_attachment=True)
+    return send_file('result.csv', as_attachment=True)
+
 
 app.run(host='0.0.0.0', port=8080)

@@ -1,11 +1,8 @@
 import pandas as pd
 import itertools
 
-def cometa_process(file1, file2):
+def cometa_process(stock, vanzari):
   
-  stock = pd.read_csv('stock.csv')
-  
-  vanzari = pd.read_csv('VANZARI.csv')
   vanzari = vanzari.fillna('')
   
   def find_combination(target, numbers):
@@ -100,9 +97,9 @@ def cometa_process(file1, file2):
   
   # Loop through the original dataframe and add the rows to the new dataframes
   for i, row in vanzari.iterrows():
-      if row['Material'] in partial_list:
-          globals()['df_'+row['Material']] = globals()['df_'+row['Material']].append(row, ignore_index=True)
-          vanzari = vanzari.drop(i)
+    if row['Material'] in partial_list:
+        globals()['df_'+row['Material']] = pd.concat([globals()['df_'+row['Material']], row], ignore_index=True)
+        vanzari = vanzari.drop(i)
   
   # Apply process_dataframe function to each new dataframe
   for x in range(len(partial_dict_values)):
@@ -112,5 +109,4 @@ def cometa_process(file1, file2):
   
   pd.set_option("display.max_rows", None, "display.max_columns", None)
   
-  output_file = vanzari.to_csv("final.csv")
-  return output_file
+  return vanzari

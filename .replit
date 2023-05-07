@@ -107,4 +107,4 @@ start = "pylsp"
 [deployment]
 run = ["sh", "-c", "python3 main.py"]
 
-run="flask run --host=0.0.0.0 --port=8080
+run="flask run --host=0.0.0.0 --port=8080"
