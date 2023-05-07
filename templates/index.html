@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload CSV files</title>
+</head>
+<body>
+    <form method="POST" enctype="multipart/form-data">
+        <input type="file" name="stock"><br>
+        <input type="file" name="VANZARI"><br>
+        <input type="submit" value="Upload">
+    </form>
+    <a href="{{ url_for('download_file') }}">Download processed CSV file</a>
+</body>
+</html>
