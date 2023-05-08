@@ -97,8 +97,10 @@ def cometa_process(stock, vanzari):
   
   # Loop through the original dataframe and add the rows to the new dataframes
   for i, row in vanzari.iterrows():
-    if row['Material'] in partial_list:
-        globals()['df_'+row['Material']] = pd.concat([globals()['df_'+row['Material']], row], ignore_index=True)
+      if row['Material'] in partial_list:
+        tempdf = globals()['df_'+row['Material']]
+        tempdf = pd.concat([globals()['df_'+row['Material']], pd.DataFrame(row).transpose()])
+        globals()['df_'+row['Material']] = tempdf
         vanzari = vanzari.drop(i)
   
   # Apply process_dataframe function to each new dataframe
