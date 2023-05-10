@@ -1,4 +1,3 @@
 pandas
 Flask
-threading
 gunicorn
