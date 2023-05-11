@@ -4,6 +4,8 @@ from Cometa import cometa_process
 
 app = Flask(__name__)
 
+app.config['TIMEOUT'] = 1200
+
 @app.route('/')
 def index():
     return render_template('index.html')
